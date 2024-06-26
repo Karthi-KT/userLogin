@@ -4,7 +4,7 @@ import { FaBars, FaMoon, FaSun } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../Redux/themeSlice";
 import { logout } from "../Redux/loginSlice";
-import LoginForm from "./LoginForm"; // Importing LoginForm
+import LoginForm from "./LoginForm";
 import PropTypes from "prop-types";
 
 const NavBar = ({ shouldDisplay }) => {
@@ -16,7 +16,7 @@ const NavBar = ({ shouldDisplay }) => {
   );
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false); // State for login form visibility
+  const [loginOpen, setLoginOpen] = useState(false);
 
   const handleToggleTheme = () => {
     dispatch(toggleTheme());
@@ -32,22 +32,28 @@ const NavBar = ({ shouldDisplay }) => {
   };
 
   const handleLoginClick = () => {
-    setLoginOpen(true); // Open login form
+    setLoginOpen(true);
   };
 
   const handleCloseLogin = () => {
-    setLoginOpen(false); // Close login form
+    setLoginOpen(false);
   };
 
   return (
     <>
       {shouldDisplay && (
-        <nav className="font-Title text-lg sticky top-0 w-full z-50 p-2">
-          <div className="flex justify-between items-center px-4">
+        <nav className="font-Title h-4rem text-lg sticky top-0 w-full z-50 p-2 shadow-md border-b-1">
+          <div
+            className={`flex justify-between items-center px-4 py-4 bg-${theme}.background text-${theme}.text`}
+          >
             <button className="text-xl md:hidden" onClick={toggleMenuOpen}>
               <FaBars />
             </button>
-            <button>CompanyLogo</button>
+            <Link to="/">
+              {" "}
+              <button>CompanyLogo</button>
+            </Link>
+
             <div className="hidden md:flex space-x-6">
               {isAuthenticated ? (
                 <>
@@ -91,9 +97,10 @@ const NavBar = ({ shouldDisplay }) => {
             </div>
           </div>
 
-          {/* Mobile Menu */}
           {menuOpen && (
-            <div className="md:hidden flex flex-col space-y-4 p-4 bg-white shadow-lg">
+            <div
+              className={`md:hidden flex flex-col space-y-4 p-4 bg-${theme}.background text-${theme}.text shadow-lg`}
+            >
               {isAuthenticated ? (
                 <>
                   <Link to="/dashboard" onClick={toggleMenuOpen}>
@@ -123,7 +130,6 @@ const NavBar = ({ shouldDisplay }) => {
           )}
         </nav>
       )}
-      {/* Render LoginForm if loginOpen is true */}
       {loginOpen && <LoginForm onClose={handleCloseLogin} />}
     </>
   );

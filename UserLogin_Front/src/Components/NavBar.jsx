@@ -81,7 +81,12 @@ const NavBar = ({ shouldDisplay }) => {
                 </>
               )}
             </div>
+
             <div className="flex space-x-4">
+              <Link to="/signup">
+                <button>Sign up</button>
+              </Link>
+
               {isAuthenticated ? (
                 <button onClick={handleLogout} className="">
                   Logout
@@ -91,6 +96,7 @@ const NavBar = ({ shouldDisplay }) => {
                   Login
                 </button>
               )}
+
               <button onClick={handleToggleTheme} className="text-2xl">
                 {theme === "dark" ? <FaSun /> : <FaMoon />}
               </button>

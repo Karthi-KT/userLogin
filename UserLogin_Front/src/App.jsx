@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Home from "./Components/Home";
 import Contact from "./Components/Contact";
+import Updates from "./Components/Updates";
+import Registration from "./Components/Registration";
+import Dashboard from "./Components/DashBoard";
 
 const App = () => {
   const location = useLocation();
@@ -28,7 +31,10 @@ const App = () => {
           <div className={theme}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/contact" element={<Contact/>} />
+              <Route path="/signup" element={<Registration/>} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/updates" element={<Updates />} />
+              <Route path="/dashboard" element={<Dashboard/>}></Route>
             </Routes>
           </div>
         </div>

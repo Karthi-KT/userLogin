@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Course 1: Master the JS",
+    "description": "Introduction to MERN and MEAN stack",
+    "imgSrc": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 2,
+    "title": "Course 2: Advanced JavaScript",
+    "description": "Dive deeper into JavaScript with advanced topics.",
+    "imgSrc": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 3,
+    "title": "Course 3: React for Beginners",
+    "description": "Get started with React and build dynamic web applications.",
+    "imgSrc": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 4,
+    "title": "Course 4: Backend Development with Node.js",
+    "description": "Learn to create server-side applications using Node.js.",
+    "imgSrc": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 5,
+    "title": "Course 5: Full Stack Development",
+    "description": "Combine frontend and backend skills to build full-stack applications.",
+    "imgSrc": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 6,
+    "title": "Course 6: Full Stack Development",
+    "description": "Combine frontend and backend skills to build full-stack applications.",
+    "imgSrc": "https://via.placeholder.com/150"
+  }
+]

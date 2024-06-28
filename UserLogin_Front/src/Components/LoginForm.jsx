@@ -14,23 +14,41 @@ const LoginForm = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage(""); // Clear message before new request
     try {
-      const response = await axios.get("http://localhost:3000/api/students", {
+      const response = await axios.post("http://localhost:3001/login", {
         email,
         password,
       });
-      console.log(response.data);
 
-      if (response.data.success) {
+      if (response.data.token) {
         setMessage("Login successful!");
+        // Save token to local storage or a cookie for later use
+        localStorage.setItem("authToken", response.data.token);
+
+        // Dispatch to Redux store if needed
         dispatch(loginSuccess({ user: response.data.user }));
-        navigate("/dashboard");
-        onClose(); 
+        navigate("/home"); // Navigate to home on successful login
+        onClose();
+        // Clear the form
+        setEmail("");
+        setPassword("");
       } else {
-        setMessage("Login failed: " + response.data.message);
+        setMessage(`Login failed: ${response.data.message}`);
+        navigate("/register"); // Navigate to register if login fails
+        alert("You are not registered to this service");
       }
     } catch (error) {
-      setMessage("Error: " + error.message);
+      // Check if the error has a response with data to show server message
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setMessage(`Login failed: ${error.response.data.message}`);
+      } else {
+        setMessage(`Error: ${error.message}`);
+      }
     }
   };
 

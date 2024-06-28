@@ -1,4 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
   const nameRef = useRef(null);
@@ -7,30 +9,37 @@ const Registration = () => {
   const yearRef = useRef(null);
   const mobRef = useRef(null);
   const mailRef = useRef(null);
+  const pwdRef = useRef(null); // New reference for password
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // State for loading indication
 
-  const studentData = (e) => {
+  const studentData = async (e) => {
     e.preventDefault(); // Prevent form submission
 
+    // Reset loading state
+    setLoading(true);
+
     const studentDetails = {
-      Name: nameRef.current.value,
-      College: clgRef.current.value,
-      Department: depRef.current.value,
-      Year: yearRef.current.value,
-      Mobile: mobRef.current.value,
-      Email: mailRef.current.value,
+      name: nameRef.current.value,
+      college: clgRef.current.value,
+      department: depRef.current.value,
+      year: yearRef.current.value,
+      mobile: mobRef.current.value,
+      email: mailRef.current.value,
+      password: pwdRef.current.value,
     };
-    console.log(studentDetails);
+    axios.post("http://localhost:3001/signup", studentDetails);
+    navigate("/");
   };
 
   return (
     <div className="flex justify-center items-center w-full h-full p-6">
       <form className="w-full max-w-md space-y-4" onSubmit={studentData}>
-        <h2 className="text-2xl font-bold text-center mb-6">Registration</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Register to create an account
+        </h2>
         <div>
-          <label
-            htmlFor="userName"
-            className="block text-sm font-medium  mb-1"
-          >
+          <label htmlFor="userName" className="block text-sm font-medium  mb-1">
             Name
           </label>
           <input
@@ -57,10 +66,7 @@ const Registration = () => {
           />
         </div>
         <div>
-          <label
-            htmlFor="userDept"
-            className="block text-sm font-medium  mb-1"
-          >
+          <label htmlFor="userDept" className="block text-sm font-medium  mb-1">
             Department
           </label>
           <input
@@ -72,10 +78,7 @@ const Registration = () => {
           />
         </div>
         <div>
-          <label
-            htmlFor="userYr"
-            className="block text-sm font-medium  mb-1"
-          >
+          <label htmlFor="userYr" className="block text-sm font-medium  mb-1">
             Year
           </label>
           <input
@@ -116,12 +119,28 @@ const Registration = () => {
             required
           />
         </div>
+        <div>
+          <label
+            htmlFor="userPassword"
+            className="block text-sm font-medium  mb-1"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            id="userPassword"
+            ref={pwdRef}
+            className="w-full p-2 h-10 rounded-md text-black"
+            required
+          />
+        </div>
         <div className="text-center">
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded-md mt-4 hover:bg-blue-600"
+            disabled={loading} // Disable button when loading
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </div>
       </form>

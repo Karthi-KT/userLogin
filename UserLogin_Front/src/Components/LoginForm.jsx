@@ -1,45 +1,40 @@
-import PropTypes from "prop-types";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/loginSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = ({ onClose }) => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(""); // Clear message before new request
+    setMessage("");
+    setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("http://localhost:3001/user/login", {
         email,
         password,
       });
 
       if (response.data.token) {
         setMessage("Login successful!");
-        // Save token to local storage or a cookie for later use
         localStorage.setItem("authToken", response.data.token);
-
-        // Dispatch to Redux store if needed
         dispatch(loginSuccess({ user: response.data.user }));
-        navigate("/home"); // Navigate to home on successful login
-        onClose();
-        // Clear the form
+        navigate("/home");
         setEmail("");
         setPassword("");
       } else {
         setMessage(`Login failed: ${response.data.message}`);
-        navigate("/register"); // Navigate to register if login fails
+        navigate("/register");
         alert("You are not registered to this service");
       }
     } catch (error) {
-      // Check if the error has a response with data to show server message
       if (
         error.response &&
         error.response.data &&
@@ -49,7 +44,14 @@ const LoginForm = ({ onClose }) => {
       } else {
         setMessage(`Error: ${error.message}`);
       }
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // Function to navigate to home
+  const goToHome = () => {
+    navigate("/");
   };
 
   return (
@@ -80,13 +82,14 @@ const LoginForm = ({ onClose }) => {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
         {message && <p className="mt-4 text-center text-red-500">{message}</p>}
         <button
-          onClick={onClose}
+          onClick={goToHome}
           className="mt-4 w-full bg-gray-300 text-black py-2 rounded-md hover:bg-gray-400 transition duration-300"
         >
           Back to home
@@ -94,10 +97,6 @@ const LoginForm = ({ onClose }) => {
       </div>
     </div>
   );
-};
-
-LoginForm.propTypes = {
-  onClose: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

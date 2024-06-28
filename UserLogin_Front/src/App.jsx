@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import Contact from "./Components/Contact";
 import Updates from "./Components/Updates";
 import Registration from "./Components/Registration";
 import Dashboard from "./Components/DashBoard";
+import LoginForm from "./Components/LoginForm";
 
 const App = () => {
   const location = useLocation();
@@ -18,9 +19,9 @@ const App = () => {
   }, [location]);
 
   const theme = useSelector((state) => state.theme.mode);
-  // const isAuthenticated = useSelector(
-  //   (state) => state.login?.isAuthenticated ?? false
-  // );
+  const isAuthenticated = useSelector(
+    (state) => state.login?.isAuthenticated ?? false
+  );
   return (
     <>
       <div className={theme === "dark" ? "dark" : ""}>
@@ -31,10 +32,20 @@ const App = () => {
           <div className={theme}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/signup" element={<Registration/>} />
+              <Route path="/signup" element={<Registration />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/updates" element={<Updates />} />
-              <Route path="/dashboard" element={<Dashboard/>}></Route>
+              <Route path="/login" element={ <LoginForm/>}></Route>
+              <Route
+                path="/dashboard"
+                element={
+                  isAuthenticated ? (
+                    <Dashboard />
+                  ) : (
+                    <Navigate to="/login" replace />
+                  )
+                }
+              />
             </Routes>
           </div>
         </div>

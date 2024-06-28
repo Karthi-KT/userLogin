@@ -28,7 +28,7 @@ const Registration = () => {
       email: mailRef.current.value,
       password: pwdRef.current.value,
     };
-    axios.post("http://localhost:3001/signup", studentDetails);
+    axios.post("http://localhost:3001/user/signup", studentDetails);
     navigate("/");
   };
 
